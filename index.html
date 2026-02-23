@@ -3,84 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RIZKY_RAMADHAN_LOG.vhs</title>
+    <title>RIZKY_RAMADHAN_LIVE.vhs</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
         :root {
-            --glitch-red: rgba(255, 0, 80, 0.8);
-            --glitch-blue: rgba(0, 255, 255, 0.8);
+            --glitch-red: rgba(255, 0, 80, 0.9);
+            --glitch-blue: rgba(0, 255, 255, 0.9);
         }
 
         body {
-            background-color: #050505;
-            color: #d1d1d1;
+            background-color: #030303;
+            color: #eeeeee;
             margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
             font-family: 'VT323', monospace;
-            /* Efek Layar Cembung (Fisheye) */
-            filter: contrast(150%) brightness(80%) sepia(20%);
+            filter: contrast(140%) brightness(90%) grayscale(20%);
         }
 
-        /* Overlay Butiran Film/Noise */
-        body::before {
-            content: "";
-            position: absolute;
+        /* Lapisan Noise Statis */
+        .noise-layer {
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://media.giphy.com/media/oEI9uWUicG3iU/giphy.gif');
-            opacity: 0.12;
+            opacity: 0.15;
             z-index: 100;
             pointer-events: none;
         }
 
-        /* Scanlines TV Rusak */
+        /* Garis Scanline TV Rusak */
         .scanlines {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(
                 rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.4) 50%
+                rgba(0, 0, 0, 0.5) 50%
             );
-            background-size: 100% 3px;
+            background-size: 100% 4px;
             z-index: 101;
             pointer-events: none;
         }
 
-        /* Container Teks Utama */
         .content {
             text-align: center;
             position: relative;
             z-index: 50;
+            transform: skew(-2deg);
         }
 
         h1 {
-            font-size: 6rem;
-            line-height: 0.9;
+            font-size: clamp(3rem, 10vw, 6rem);
             margin: 0;
             color: #fff;
-            text-shadow: 4px 0 var(--glitch-red), -4px 0 var(--glitch-blue);
-            animation: heavy-glitch 0.3s infinite;
-            filter: blur(0.5px);
+            text-shadow: 5px 0 var(--glitch-red), -5px 0 var(--glitch-blue);
+            animation: glitch-anim 0.2s infinite;
         }
 
         h2 {
             font-size: 3rem;
             color: #ff0000;
-            opacity: 0.7;
-            margin-top: 10px;
-            animation: flicker 2s infinite;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            animation: flicker 1.5s infinite;
         }
 
-        /* Indikator Rekaman Jadul */
+        /* UI VHS (REC & JAM) */
         .vhs-ui {
             position: absolute;
-            top: 30px;
-            left: 30px;
+            top: 40px;
+            left: 50px;
             font-size: 2.5rem;
             color: #fff;
             text-shadow: 2px 2px #000;
@@ -88,65 +83,108 @@
 
         .date-time {
             position: absolute;
-            bottom: 30px;
-            right: 30px;
-            font-size: 2rem;
+            bottom: 40px;
+            right: 50px;
+            font-size: 2.5rem;
             text-align: right;
+            color: #fff;
+            text-shadow: 2px 2px #000;
         }
 
-        /* Animasi Glitch Brutal */
-        @keyframes heavy-glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-3px, 2px) skewX(2deg); }
-            40% { transform: translate(3px, -2px) skewY(-1deg); }
-            60% { transform: translate(-5px, 0px) scaleY(1.05); filter: hue-rotate(90deg); }
-            80% { transform: translate(5px, 2px) skewX(-3deg); }
+        .rec-dot {
+            color: #ff0000;
+            animation: blink 1s step-end infinite;
+        }
+
+        /* Animasi */
+        @keyframes glitch-anim {
+            0% { transform: translate(0); filter: hue-rotate(0deg); }
+            25% { transform: translate(-4px, 2px); }
+            50% { transform: translate(4px, -2px) scale(1.02); filter: hue-rotate(180deg); }
+            75% { transform: translate(-2px, -4px); }
             100% { transform: translate(0); }
         }
 
         @keyframes flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.7; }
-            20%, 24%, 55% { opacity: 0.1; }
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(0.98); }
         }
 
-        /* Garis statik putih besar (Tracking Error) */
-        .tracking-bar {
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Garis gangguan pita kaset */
+        .tape-error {
             position: absolute;
             width: 100%;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            filter: blur(10px);
-            animation: tracking-move 8s linear infinite;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.4);
+            opacity: 0.3;
+            animation: tape-move 5s linear infinite;
         }
 
-        @keyframes tracking-move {
-            from { top: -10%; }
-            to { top: 110%; }
+        @keyframes tape-move {
+            0% { top: 0%; }
+            100% { top: 100%; }
         }
     </style>
 </head>
 <body>
 
+    <div class="noise-layer"></div>
     <div class="scanlines"></div>
-    <div class="tracking-bar"></div>
+    <div class="tape-error"></div>
 
     <div class="vhs-ui">
-        REC ● <br>
-        <span style="font-size: 1.5rem;">SP</span>
+        <span class="rec-dot">●</span> REC<br>
+        <span id="vhs-play-time">00:00:00</span>
     </div>
 
     <div class="content">
         <h1>RIZKY RAMADHAN GANTENG</h1>
         <h2>ANAK EDI TEMPE</h2>
-        <p style="letter-spacing: 15px; font-size: 1.2rem; margin-top: 50px; opacity: 0.4;">
-            DOKUMEN_RAHASIA_1998
-        </p>
+        <p style="opacity: 0.3; margin-top: 20px;">[ SUBSURFACE_SIGNAL_FOUND ]</p>
     </div>
 
     <div class="date-time">
-        SEP. 12 1998<br>
-        PM 11:43:02
+        <div id="vhs-date">JAN. 01 1990</div>
+        <div id="vhs-clock">00:00:00 PM</div>
     </div>
+
+    <script>
+        function updateVHS() {
+            const now = new Date();
+            
+            // Format Jam (WIB/Jakarta)
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
+            
+            document.getElementById('vhs-clock').textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+
+            // Format Tanggal ala VHS
+            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            const month = months[now.getMonth()];
+            const day = String(now.getDate()).padStart(2, '0');
+            const year = now.getFullYear();
+            
+            document.getElementById('vhs-date').textContent = `${month}. ${day} ${year}`;
+
+            // Playback Timer (Waktu berjalan sejak halaman dibuka)
+            // Di sini kita buat seolah-olah durasi kaset
+            const playTime = document.getElementById('vhs-play-time');
+            let totalSeconds = Math.floor(performance.now() / 1000);
+            let p_hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+            let p_mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+            let p_secs = String(totalSeconds % 60).padStart(2, '0');
+            playTime.textContent = `${p_hours}:${p_mins}:${p_secs}`;
+        }
+
+        setInterval(updateVHS, 1000);
+        updateVHS(); // Jalankan langsung
+    </script>
 
 </body>
 </html>
