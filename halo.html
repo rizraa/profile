@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEM_FAILURE_EDI_TEMPE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap');
+
+        body, html {
+            background-color: #050000;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Courier Prime', monospace;
+            color: #ff0000;
+        }
+
+        /* Overlay Merah Darah (Vignette) */
+        .blood-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 30%, rgba(50, 0, 0, 0.9) 100%);
+            z-index: 200;
+            pointer-events: none;
+        }
+
+        /* Efek Kerusakan Pita VHS Parah */
+        .glitch-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            z-index: 150;
+            pointer-events: none;
+            animation: roll 10s linear infinite;
+        }
+
+        @keyframes roll {
+            from { background-position: 0 0; }
+            to { background-position: 0 100%; }
+        }
+
+        /* Container Teks */
+        #container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            filter: blur(0.4px);
+        }
+
+        .main-text {
+            font-size: 5rem;
+            text-align: center;
+            letter-spacing: -5px;
+            margin: 0;
+            text-transform: uppercase;
+            animation: distortion 0.1s infinite alternate;
+            filter: drop-shadow(0 0 15px #f00);
+        }
+
+        .sub-text {
+            font-size: 2rem;
+            background: #ff0000;
+            color: #000;
+            padding: 5px 20px;
+            margin-top: 20px;
+            font-weight: bold;
+            transform: rotate(-2deg);
+        }
+
+        /* UI Metadata */
+        .metadata {
+            position: absolute;
+            font-size: 1.5rem;
+            padding: 20px;
+            opacity: 0.5;
+        }
+
+        /* Jumpscare Image */
+        #face {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZkM2pxbmNueWF6Mzh0Z2YxdXVtY3E3NjR5dzZ3bXN5dzZ3bXN5dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKqnX6fylvKxrO0/giphy.gif') center/cover;
+            z-index: 999;
+            display: none;
+            filter: invert(1) contrast(200%) brightess(50%);
+        }
+
+        /* Animasi Distortion */
+        @keyframes distortion {
+            0% { transform: skew(2deg) scale(1); clip-path: inset(10% 0 30% 0); }
+            50% { transform: skew(-3deg) scale(1.05); clip-path: inset(40% 0 10% 0); }
+            100% { transform: skew(1deg) scale(0.95); clip-path: inset(20% 0 50% 0); }
+        }
+
+        #start-gate {
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background:#000; z-index:1000;
+            display:flex; justify-content:center; align-items:center;
+            cursor:pointer; color: #ff0000; font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="start-gate">DATA_DITEMUKAN: KLIK UNTUK EKSTRAKSI</div>
+
+    <div class="blood-overlay"></div>
+    <div class="glitch-screen"></div>
+    <div id="face"></div>
+
+    <div class="metadata" style="top:0; left:0;">
+        KORBAN_ID: RIZKY_RAMADHAN<br>
+        STATUS: DICARI
+    </div>
+
+    <div class="metadata" style="bottom:0; right:0; text-align:right;">
+        LOKASI: JAKARTA_ID<br>
+        <span id="clock">00:00:00</span>
+    </div>
+
+    <div id="container">
+        <h1 class="main-text" id="target">RIZKY RAMADHAN</h1>
+        <div class="sub-text">ANAK EDI TEMPE</div>
+        <p id="warning" style="margin-top: 40px; font-size: 1.2rem;">JANGAN LIHAT KE BELAKANG</p>
+    </div>
+
+    <script>
+        const startGate = document.getElementById('start-gate');
+        const target = document.getElementById('target');
+        const warning = document.getElementById('warning');
+        const face = document.getElementById('face');
+        let audioCtx;
+
+        function initAudio() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Suara Low Drone (Mencekam)
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(40, audioCtx.currentTime); 
+            gain.gain.value = 0.2;
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+
+            // Suara Detak Jantung
+            setInterval(() => {
+                const kick = audioCtx.createOscillator();
+                const kGain = audioCtx.createGain();
+                kick.frequency.setValueAtTime(60, audioCtx.currentTime);
+                kick.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                kGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                kGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
+                kick.connect(kGain);
+                kGain.connect(audioCtx.destination);
+                kick.start();
+                kick.stop(audioCtx.currentTime + 0.1);
+            }, 800);
+        }
+
+        function scream() {
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(Math.random() * 400 + 100, audioCtx.currentTime);
+            g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.connect(g);
+            g.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.5);
+        }
+
+        startGate.addEventListener('click', () => {
+            startGate.style.display = 'none';
+            initAudio();
+            
+            // Terus update jam Jakarta
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('clock').innerText = now.toLocaleTimeString('id-ID');
+            }, 1000);
+
+            // Siklus Jumpscare & Perubahan Teks
+            setInterval(() => {
+                const rand = Math.random();
+                if(rand > 0.8) {
+                    face.style.display = 'block';
+                    scream();
+                    target.innerText = "EDI TEMPE DATANG";
+                    warning.innerText = "SUDAH TERLAMBAT";
+                    
+                    setTimeout(() => {
+                        face.style.display = 'none';
+                        target.innerText = "RIZKY RAMADHAN";
+                        warning.innerText = "JANGAN LIHAT KE BELAKANG";
+                    }, 150);
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
