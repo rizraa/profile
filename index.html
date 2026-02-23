@@ -3,188 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RIZKY_RAMADHAN_LIVE.vhs</title>
+    <title>SUB_PROJECT_EDI_TEMPE.vhs</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
-        :root {
-            --glitch-red: rgba(255, 0, 80, 0.9);
-            --glitch-blue: rgba(0, 255, 255, 0.9);
-        }
-
-        body {
-            background-color: #030303;
-            color: #eeeeee;
+        body, html {
+            background-color: #000;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            padding: 0;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             font-family: 'VT323', monospace;
-            filter: contrast(140%) brightness(90%) grayscale(20%);
+            cursor: crosshair;
         }
 
-        /* Lapisan Noise Statis */
-        .noise-layer {
+        /* Filter CRT / Fisheye */
+        .screen-effects {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://media.giphy.com/media/oEI9uWUicG3iU/giphy.gif');
-            opacity: 0.15;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%),
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+            background-size: 100% 3px, 3px 100%;
             z-index: 100;
             pointer-events: none;
         }
 
-        /* Garis Scanline TV Rusak */
-        .scanlines {
+        /* Grain / Noise */
+        .noise {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.5) 50%
-            );
-            background-size: 100% 4px;
-            z-index: 101;
+            background: url('https://media.giphy.com/media/oEI9uWUicG3iU/giphy.gif');
+            opacity: 0.15;
+            z-index: 95;
             pointer-events: none;
         }
 
-        .content {
+        /* Container Utama */
+        #vhs-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             text-align: center;
-            position: relative;
-            z-index: 50;
-            transform: skew(-2deg);
+            transition: all 0.1s;
         }
 
         h1 {
-            font-size: clamp(3rem, 10vw, 6rem);
-            margin: 0;
             color: #fff;
-            text-shadow: 5px 0 var(--glitch-red), -5px 0 var(--glitch-blue);
-            animation: glitch-anim 0.2s infinite;
+            font-size: 5rem;
+            margin: 0;
+            text-shadow: 3px 0 #ff0000, -3px 0 #00ffff;
+            animation: shake 0.5s infinite;
         }
 
         h2 {
-            font-size: 3rem;
-            color: #ff0000;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            animation: flicker 1.5s infinite;
-        }
-
-        /* UI VHS (REC & JAM) */
-        .vhs-ui {
-            position: absolute;
-            top: 40px;
-            left: 50px;
+            color: #f00;
             font-size: 2.5rem;
-            color: #fff;
-            text-shadow: 2px 2px #000;
+            opacity: 0.6;
+            animation: flicker 0.1s infinite;
         }
 
-        .date-time {
+        /* JUMPSCARE ELEMENT */
+        #jumpscare-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: none;
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #jumpscare-image {
+            width: 120%;
+            height: 120%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(300%) invert(100%);
+        }
+
+        /* UI VHS */
+        .ui {
             position: absolute;
-            bottom: 40px;
-            right: 50px;
-            font-size: 2.5rem;
-            text-align: right;
-            color: #fff;
+            color: #eee;
+            font-size: 2rem;
             text-shadow: 2px 2px #000;
+            z-index: 80;
         }
 
-        .rec-dot {
-            color: #ff0000;
-            animation: blink 1s step-end infinite;
+        #click-to-start {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            font-size: 2rem;
         }
 
         /* Animasi */
-        @keyframes glitch-anim {
-            0% { transform: translate(0); filter: hue-rotate(0deg); }
-            25% { transform: translate(-4px, 2px); }
-            50% { transform: translate(4px, -2px) scale(1.02); filter: hue-rotate(180deg); }
-            75% { transform: translate(-2px, -4px); }
-            100% { transform: translate(0); }
+        @keyframes shake {
+            0% { transform: translate(2px, 1px) rotate(0deg); }
+            20% { transform: translate(-3px, -2px) rotate(1deg); }
+            40% { transform: translate(-1px, -1px) rotate(-1deg); }
+            60% { transform: translate(3px, 2px) rotate(0deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
 
         @keyframes flicker {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 0.2; transform: scale(0.98); }
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.1; }
         }
 
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-
-        /* Garis gangguan pita kaset */
-        .tape-error {
+        .tracking {
             position: absolute;
             width: 100%;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.4);
-            opacity: 0.3;
-            animation: tape-move 5s linear infinite;
+            height: 100px;
+            background: rgba(255,255,255,0.05);
+            filter: blur(20px);
+            animation: track-move 4s linear infinite;
         }
 
-        @keyframes tape-move {
-            0% { top: 0%; }
-            100% { top: 100%; }
+        @keyframes track-move {
+            from { top: -100px; }
+            to { top: 100vh; }
         }
     </style>
 </head>
 <body>
 
-    <div class="noise-layer"></div>
-    <div class="scanlines"></div>
-    <div class="tape-error"></div>
-
-    <div class="vhs-ui">
-        <span class="rec-dot">●</span> REC<br>
-        <span id="vhs-play-time">00:00:00</span>
+    <div id="click-to-start">
+        <p>[ KLIK UNTUK MEMUTAR KASET ]</p>
     </div>
 
-    <div class="content">
-        <h1>RIZKY RAMADHAN GANTENG</h1>
+    <div class="screen-effects"></div>
+    <div class="noise"></div>
+    <div class="tracking"></div>
+
+    <div class="ui" style="top: 20px; left: 30px;">
+        <span style="color: red;">●</span> REC <br>
+        <span id="play-timer">00:00:00</span>
+    </div>
+    
+    <div class="ui" style="bottom: 20px; right: 30px; text-align: right;">
+        <div id="vhs-date">--- -- ----</div>
+        <div id="vhs-time">00:00:00</div>
+    </div>
+
+    <div id="vhs-content">
+        <h1 id="main-title">RIZKY RAMADHAN GANTENG</h1>
         <h2>ANAK EDI TEMPE</h2>
-        <p style="opacity: 0.3; margin-top: 20px;">[ SUBSURFACE_SIGNAL_FOUND ]</p>
+        <p style="margin-top: 50px; color: #444; letter-spacing: 5px;">DATA_CORRUPTED</p>
     </div>
 
-    <div class="date-time">
-        <div id="vhs-date">JAN. 01 1990</div>
-        <div id="vhs-clock">00:00:00 PM</div>
+    <div id="jumpscare-overlay">
+        <img id="jumpscare-image" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZkM2pxbmNueWF6Mzh0Z2YxdXVtY3E3NjR5dzZ3bXN5dzZ3bXN5dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKqnX6fylvKxrO0/giphy.gif" alt="VOID">
     </div>
 
     <script>
-        function updateVHS() {
-            const now = new Date();
-            
-            // Format Jam (WIB/Jakarta)
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
-            
-            document.getElementById('vhs-clock').textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+        let audioCtx;
+        const startBtn = document.getElementById('click-to-start');
+        const jsOverlay = document.getElementById('jumpscare-overlay');
+        const mainTitle = document.getElementById('main-title');
 
-            // Format Tanggal ala VHS
-            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-            const month = months[now.getMonth()];
-            const day = String(now.getDate()).padStart(2, '0');
-            const year = now.getFullYear();
+        // Fungsi Memulai Audio "Static"
+        function startHorrorAudio() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             
-            document.getElementById('vhs-date').textContent = `${month}. ${day} ${year}`;
+            // White Noise Generator
+            const bufferSize = 2 * audioCtx.sampleRate,
+            noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate),
+            output = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
 
-            // Playback Timer (Waktu berjalan sejak halaman dibuka)
-            // Di sini kita buat seolah-olah durasi kaset
-            const playTime = document.getElementById('vhs-play-time');
-            let totalSeconds = Math.floor(performance.now() / 1000);
-            let p_hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-            let p_mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-            let p_secs = String(totalSeconds % 60).padStart(2, '0');
-            playTime.textContent = `${p_hours}:${p_mins}:${p_secs}`;
+            const whiteNoise = audioCtx.createBufferSource();
+            whiteNoise.buffer = noiseBuffer;
+            whiteNoise.loop = true;
+
+            const gainNode = audioCtx.createGain();
+            gainNode.gain.value = 0.05; // Volume background statis pelan
+
+            whiteNoise.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            whiteNoise.start();
         }
 
-        setInterval(updateVHS, 1000);
-        updateVHS(); // Jalankan langsung
-    </script>
+        // Fungsi Suara Jumpscare (High Pitch Scream Synth)
+        function playScream() {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.5);
+            
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.8);
+        }
 
+        // Update Jam & Tanggal Jakarta
+        function updateClock() {
+            const now = new Date();
+            const options = { timeZone: 'Asia/Jakarta', hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const timeStr = now.toLocaleTimeString('en-US', options);
+            
+            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            document.getElementById('vhs-time').innerText = timeStr.toUpperCase();
+            document.getElementById('vhs-date').innerText = `${months[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
+            
+            // Play timer sederhana
+            const diff = Math.floor(performance.now() / 1000);
+            const h = String(Math.floor(diff/3600)).padStart(2,'0');
+            const m = String(Math.floor((diff%3600)/60)).padStart(2,'0');
+            const s = String(diff%60).padStart(2,'0');
+            document.getElementById('play-timer').innerText = `${h}:${m}:${s}`;
+        }
+
+        // Logika Jumpscare Acak
+        function triggerJumpscare() {
+            const delay = Math.random() * (15000 - 5000) + 5000; // Antara 5-15 detik
+            
+            setTimeout(() => {
+                // Eksekusi Jumpscare
+                jsOverlay.style.display = 'flex';
+                playScream();
+                
+                // Judul berubah saat jumpscare
+                const originalTitle = mainTitle.innerText;
+                mainTitle.innerText = "EDI TEMPE MELIHATMU";
+                mainTitle.style.color = "#ff0000";
+
+                setTimeout(() => {
+                    jsOverlay.style.display = 'none';
+                    mainTitle.innerText = originalTitle;
+                    mainTitle.style.color = "#fff";
+                    triggerJumpscare(); // Ulangi lagi nanti
+                }, 200); // Jumpscare cuma muncul 0.2 detik (subliminal)
+                
+            }, delay);
+        }
+
+        // Event Listener Klik Awal
+        startBtn.addEventListener('click', () => {
+            startBtn.style.display = 'none';
+            startHorrorAudio();
+            triggerJumpscare();
+            setInterval(updateClock, 1000);
+        });
+    </script>
 </body>
 </html>
