@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook – log in atau daftar</title>
+    <link rel="icon" href="https://static.xx.fbcdn.net/rsrc.php/yb/r/hLRp1u_Omqc.ico">
+    <style>
+        body {
+            font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 72px;
+            padding-bottom: 112px;
+        }
+
+        .fb-container {
+            width: 980px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Bagian Kiri */
+        .left-section {
+            width: 500px;
+            padding-top: 46px;
+            margin-right: 32px;
+        }
+
+        .left-section img {
+            height: 106px;
+            margin: -28px;
+        }
+
+        .left-section h2 {
+            font-size: 28px;
+            font-weight: 400;
+            line-height: 32px;
+            width: 500px;
+            color: #1c1e21;
+            margin-top: 0;
+        }
+
+        /* Bagian Kanan (Login Card) */
+        .right-section {
+            width: 396px;
+        }
+
+        .login-card {
+            background-color: #fff;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .login-card input {
+            width: 100%;
+            height: 52px;
+            padding: 14px 16px;
+            font-size: 17px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            color: #1c1e21;
+        }
+
+        .login-card input:focus {
+            outline: none;
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px #e7f3ff;
+        }
+
+        .login-btn {
+            width: 100%;
+            background-color: #1877f2;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 48px;
+            padding: 0 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: #166fe5;
+        }
+
+        .forgot-pass {
+            display: block;
+            margin-top: 16px;
+            color: #1877f2;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .forgot-pass:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            align-items: center;
+            border-bottom: 1px solid #dadde1;
+            display: flex;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .create-btn-container {
+            padding-top: 6px;
+        }
+
+        .create-btn {
+            background-color: #42b72a;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 48px;
+            padding: 0 16px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .create-btn:hover {
+            background-color: #36a420;
+        }
+
+        .page-desc {
+            margin-top: 28px;
+            font-size: 14px;
+            color: #1c1e21;
+        }
+
+        .page-desc a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #1c1e21;
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #fff;
+            padding: 20px 0;
+            color: #737373;
+            font-size: 12px;
+        }
+
+        .footer-content {
+            width: 980px;
+            margin: 0 auto;
+        }
+
+        .footer-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .footer-content ul li {
+            margin-right: 15px;
+            margin-bottom: 5px;
+        }
+
+        .footer-content a {
+            color: #8a8d91;
+            text-decoration: none;
+        }
+
+        .footer-content a:hover {
+            text-decoration: underline;
+        }
+
+        hr.footer-hr {
+            border: 0;
+            border-top: 1px solid #dddfe2;
+            margin: 10px 0;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 900px) {
+            .fb-container { width: 100%; flex-direction: column; align-items: center; padding: 20px; }
+            .left-section { width: 100%; text-align: center; margin-right: 0; padding-top: 0; }
+            .left-section h2 { width: 100%; font-size: 24px; padding: 0 20px; box-sizing: border-box; }
+            .right-section { width: 100%; max-width: 400px; margin-top: 40px; }
+            .footer-content { width: 90%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-content">
+        <div class="fb-container">
+            <div class="left-section">
+                <img src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCuq_h9qc6.svg" alt="Facebook">
+                <h2>Facebook membantu Anda terhubung dan berbagi dengan orang-orang dalam kehidupan Anda.</h2>
+            </div>
+
+            <div class="right-section">
+                <div class="login-card">
+                    <form>
+                        <input type="text" placeholder="Email atau Nomor Telepon" autocomplete="username">
+                        <input type="password" placeholder="Kata Sandi" autocomplete="current-password">
+                        <button type="button" class="login-btn">Log In</button>
+                        <a href="#" class="forgot-pass">Lupa kata sandi?</a>
+                        <div class="divider"></div>
+                        <div class="create-btn-container">
+                            <button type="button" class="create-btn">Buat Akun Baru</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="page-desc">
+                    <a href="#">Buat Halaman</a> untuk selebriti, merek, atau bisnis.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <ul>
+                <li>Bahasa Indonesia</li>
+                <li><a href="#">English (UK)</a></li>
+                <li><a href="#">Basa Jawa</a></li>
+                <li><a href="#">Bahasa Melayu</a></li>
+                <li><a href="#">日本語</a></li>
+                <li><a href="#">Français (France)</a></li>
+            </ul>
+            <hr class="footer-hr">
+            <ul>
+                <li><a href="#">Daftar</a></li>
+                <li><a href="#">Masuk</a></li>
+                <li><a href="#">Messenger</a></li>
+                <li><a href="#">Facebook Lite</a></li>
+                <li><a href="#">Video</a></li>
+                <li><a href="#">Tempat</a></li>
+                <li><a href="#">Permainan</a></li>
+                <li><a href="#">Marketplace</a></li>
+                <li><a href="#">Meta Pay</a></li>
+                <li><a href="#">Meta Store</a></li>
+            </ul>
+            <p style="margin-top: 20px;">Meta © 2024</p>
+        </div>
+    </footer>
+
+</body>
+</html>
